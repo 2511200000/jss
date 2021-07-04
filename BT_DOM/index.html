@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="firstName" placeholder=" FirstName" autofocus required /><br /><br />
+  <input type="text" id="lastName" placeholder="Last Name" required /><br /><br />
+  <input type="text" id="phoneNumber" placeholder="Phone Number" required /><br /><br />
+  <input type="text" id="address" placeholder="Address" required /><br /><br />
+  <button onclick="return getInFo()">Submit</button><br /><br />
+  <style>
+    .show {
+      display: block;
+    }
+
+    .hide {
+      display: none;
+    }
+  </style>
+
+  <div class="result"></div>
+
+  <script>
+    function getInFo() {
+      var firstName = document.querySelector("#firstName").value;
+      var lastName = document.querySelector("#lastName").value;
+      var phoneNumber = document.querySelector("#phoneNumber").value;
+      var address = document.querySelector("#address").value;
+      var result;
+      var info = "";
+      var hide;
+
+      if (firstName && lastName && phoneNumber && address) {
+        info += "Your first name is " + firstName + "<br>";
+        info += "Your last name is " + lastName + "<br>";
+        info += "Your phone number is " + phoneNumber + "<br>";
+        info += "Your address is " + address + "<br>" + "<br>";
+
+        result = document.querySelector(".result");
+        result.innerHTML = info;
+
+        hide = document.createElement("button");
+        hide.textContent = "Hide";
+        document.body.appendChild(hide);
+
+        hide.addEventListener("click", () => {
+          if (result.classList.toggle("hide")) {
+            hide.textContent = "Show";
+          } else {
+            hide.textContent = "Hide";
+          }
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>

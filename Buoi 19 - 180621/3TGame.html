@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #board {
+            width: 152px;
+            height: 152px;
+            margin: auto;
+            position: relative;
+        }
+
+        #board button {
+            border: 1px blue solid;
+            width: 50px;
+            height: 50px;
+            font-size: 36px;
+            font-weight: bold;
+            display: block;
+            float: left;
+        }
+
+        #board button:hover {
+            background-color: yellow;
+        }
+
+        #current-turn,
+        #reset {
+            text-align: center;
+            height: 50px;
+            font-size: 24px;
+        }
+
+        #current-turn span {
+            font-weight: bold;
+        }
+
+        #result {
+            width: 100%;
+            height: 0;
+            background-color: aquamarine;
+            opacity: 0;
+            position: absolute;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            transition: all 2s;
+        }
+
+        .result-show {
+            height: 100% !important;
+            opacity: 0.95 !important;
+            font-size: 30px;
+        }
+    </style>
+    <script>
+        //window.onload = function(){
+        //    alert(document.querySelector('#reset'));
+        //}
+        // window.addEventListener('load',function(){
+        //     alert(document.querySelector('#reset'));
+        // });
+        window.addEventListener('beforeunload',function(){
+            return "Are you sure to leave";
+        });
+        // window.onbeforeunload = function()
+        // {
+        //     return 'ABC';
+        // }
+    </script>
+</head>
+
+<body>
+    <div id="current-turn">Current Turn: <span>X</span></div>    
+    <div id="board">
+        <div id="result"></div>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+    </div>
+    <div id="reset"><button>Reset Game</button></div>
+    <script>
+        let currentTurn = 'X';
+        let filledCell = 0;
+        let btnArr = document.querySelectorAll("#board button");
+        let gameOver = false;
+        let indexMatrix = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+        for (btn of btnArr) {
+            //Gán hàm xử lý sự kiện click cho từng button
+            btn.addEventListener("click", function () {
+                //Nếu ô còn trống thì mới xử lý
+                if (this.innerHTML === '' && !gameOver) {
+                    //Điền lượt chơi X/O
+                    this.innerHTML = currentTurn;
+                    //Đảo lượt chơi
+                    if (currentTurn == 'X')
+                        currentTurn = 'O';
+                    else
+                        currentTurn = 'X';
+                    //Cập nhật lại hiển thị Current Turn
+                    document.querySelector('#current-turn span').innerHTML = currentTurn;
+                    //Tăng biến đếm số ô đã filled
+                    filledCell++;
+                    //Check kết quả
+                    for (test of indexMatrix) {
+                        // console.log(test);
+                        if (btnArr[test[0]].innerHTML !== '')
+                            if (btnArr[test[0]].innerHTML === btnArr[test[1]].innerHTML && btnArr[test[1]].innerHTML === btnArr[test[2]].innerHTML) {
+                                gameOver = true;
+                                //Show result
+                                showResult(btnArr[test[0]].innerHTML + "<br>WIN");                            }
+                    }
+                }
+                    //Truong hop da fill tat ca cell
+                    if (filledCell === 9 && !gameOver) {
+                        showResult("Draw");
+                        gameOver = true;
+                    }
+                });
+        }
+        //Gán hàm xử lý sự kiện click nút Reset game
+        document.querySelector('#reset button').addEventListener('click', function () {
+            //Xóa trống tất cả các ô
+            for (btn of btnArr)
+                btn.innerHTML = '';
+            //Cập nhật lại gia tri ban dau
+            filledCell = 0;
+            gameOver = false;
+            //Random first turn
+            if (Math.random() >= 0.5)
+                currentTurn = 'X';
+            else
+                currentTurn = 'O';
+            document.querySelector('#current-turn span').innerHTML = currentTurn;
+            document.querySelector('#result').classList.remove('result-show');
+        });
+
+        //Ham xu ly show Panel result
+        function showResult(message = '') {
+            let resultDiv = document.querySelector('#result');
+            resultDiv.innerHTML = message;
+            resultDiv.classList.add('result-show');
+        }
+        
+    </script>
+    
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=" -UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #board {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        border-radius: 3px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    #board button {
+        border: 1px solid blue;
+        width: 50px;
+        height: 50px;
+        display: block;
+        float: left;
+    }
+
+    button:hover {
+        background-color: yellow;
+        font-size: xx-large;
+    }
+
+    .reset {
+        margin-top: 1em;
+        margin-left: 44em;
+    }
+
+    #show-result {
+        width: 100%;
+        height: 0;
+        background-color: aquamarine;
+        position: absolute;
+        opacity: 0;
+        z-index: 10;
+        transition: all 2s;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+    }
+
+    .result {
+        height: 100% !important;
+        opacity: 0.9 !important;
+    }
+</style>
+
+<body>
+    <div id="board">
+        <div id="show-result"></div>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+    </div>
+
+    <div class="reset"><button>Reset</button></div>
+
+    <script>
+        // for (let btn of btnArr) {
+        //     btn.addEventListener('click', () => {
+        //         if (btn.innerHTML === '') {
+        //             btn.innerHTML = currentTurn;
+
+        //             if (currentTurn == 'X')
+        //                 currentTurn = 'O';
+        //             else
+        //                 currentTurn = 'X';
+        //         }
+        //     });
+        // }
+        let currentTurn = 'X';
+        let filledCell = 0;
+        let indexMatrix = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+        let btnArr = document.querySelectorAll('#board button');
+        let checkGame = false;
+        btnArr.forEach(element => {
+            element.addEventListener('click', () => {
+                if (element.innerHTML === '' && !checkGame) {
+                    element.innerHTML = currentTurn;
+
+                    if (currentTurn == 'X')
+                        currentTurn = 'O';
+                    else
+                        currentTurn = 'X';
+                    filledCell++;
+                }
+                //show kết quả
+                for (let index of indexMatrix) {
+                    if (btnArr[index[0]].innerHTML != '') {
+                        if (btnArr[index[0]].innerHTML === btnArr[index[1]].innerHTML && btnArr[index[1]].innerHTML === btnArr[index[2]].innerHTML) {
+                            checkGame = true;
+
+                            showMessage(btnArr[index[0]].innerHTML + '<br>' + 'Win');
+                        }
+                    }
+                }
+                if (filledCell === 9 && !checkGame) {
+                   showMessage('Draw');
+                    checkGame = true;
+                }
+            });
+        });
+
+        //reset lại game
+        document.querySelector('.reset button').addEventListener('click', () => {
+            btnArr.forEach(element => {
+                filledCell = 0;
+                checkGame = false;
+                let result = document.querySelector('#show-result');
+                result.classList.remove('result');
+                element.innerHTML = '';
+            });
+        });
+
+
+        function showMessage(message) {
+            let result = document.querySelector('#show-result');
+            result.innerHTML =  message;
+            result.classList.add('result');
+        }
+    </script>
+
+</body>
+
+</html>

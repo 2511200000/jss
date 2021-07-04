@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="css/layout.css" rel="stylesheet">
+  <link href="css/responsive.css" rel="stylesheet">
+  <link href="css/font-awesome/css/fontawesome.min.css" rel="stylesheet">
+  <link href="css/font-awesome/css/brands.css" rel="stylesheet">
+  <link href="css/font-awesome/css/solid.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div id="header">header <i class="fas fa-camera"></i><i class="fas fa-adjust"></i></div>
+    <div id="menu">
+      <button><i class="fas fa-bars"></i></button>
+      <ul>
+        <li id="HomePage"><a href="#"><i class="fas fa-home"></i>Trang chu</a></li>
+        <li><a href="#">Gioi thieu</a></li>
+        <li class="has-sub"><a href="javascript:void()">San pham</a>
+          <ul>
+            <li id="clothing" value="1"><a href="#">men's clothing</a></li>
+            <li class="has-sub" id="clothing" value="2"><a href="#">jewelery</a>
+              <!-- <ul>
+                <li><a href="#">Samsung</a></li>
+                <li><a href="#">Iphone</a></li>
+                <li><a href="#">Xiaomi</a></li>
+              </ul> -->
+            </li>
+            <li id="clothing" value="3"><a href="#">electronics</a></li>
+            <li id="clothing" value="4"><a href="#">women's clothing</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Huong dan</a></li>
+        <li class="has-sub"><a href="#">Lien he</a>
+          <ul>
+            <li><a href="#">Laptop</a></li>
+            <li><a href="#">Dien thoai</a></li>
+            <li class="has-sub"><a href="#">May tinh bang test test</a>
+              <ul>
+                <li><a href="#">Samsung</a></li>
+                <li><a href="#">Iphone</a></li>
+                <li><a href="#">Xiaomi</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="left" class="">
+      <!-- col-s-3 col-2 -->
+      <label><input name="sort" value="1" class="sort" type="radio"> Price Ascending </label><br>
+      <label><input name="sort" value="2" class="sort" type="radio"> Price Descending </label><br>
+      <label><input name="sort" value="3" class="sort" type="radio"> Name Ascending </label><br>
+      <label><input name="sort" value="4" class="sort" type="radio"> Name Descending </label><br>
+      <select name="sort">
+        <optgroup label="Price">
+          <option value="0">...</option>
+          <option value="1">Ascending</option>
+          <option value="2">Descending</option>
+        </optgroup>
+        <optgroup label="Name">
+          <option value="3">Ascending</option>
+          <option value="4">Descending</option>
+        </optgroup>
+      </select>
+      <select name="filter">
+        <option value="0">...</option>
+        <option value="1">Price &lt;= 10 Mil</option>
+        <option value="2">Price between 10 Mil and 20 Mil</option>
+        <option value="3">Price between 20 Mil and 40 Mil</option>
+        <option value="4">Price between 40 Mil and 100 Mil</option>
+        <option value="5">Price &gt;= 100 Mil</option>
+      </select>
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#cart" data-backdrop="static"
+        data-keyboard="false">Cart (<span class="total-count" style="font-weight: bold;"></span>)</button>
+      <button type="button" class="btn btn-danger" id="clearCart">Clear Cart</button>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="searchValue form-control mr-sm-2" type="text" placeholder="Search by title" aria-label="Search">
+        <button class="Search btn btn-warning">Search</button>
+      </form>
+
+    </div>
+    <div id="main" class="col-s-9 col-8">
+    </div>
+    <!-- <div id="right" class="col-s-12 col-2">right</div> -->
+    <div id="footer">footer</div>
+  </div>
+
+
+  <style>
+    .show-cart li {
+      display: flex;
+    }
+
+    .card {
+      margin-bottom: 20px;
+    }
+
+    .card-img-top {
+      width: 200px;
+      height: 200px;
+      align-self: center;
+    }
+  </style>
+
+  <!-- Modal Cart -->
+  <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <table class="show-cart table" ">
+          </table>
+          <div><span style=" color:red; font-weight: bold;" class="total-cart"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back to shopping</button>
+        <button type="button" class="btn btn-primary">Order now</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal detail -->
+  <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <div class="modal-body">
+          <div style="display: flex;">
+            <div class="imageItem">
+
+            </div>
+
+            <div style="margin-left: 270px;" class="contentItem">
+              <div class="titleITem" style="color: red;"></div>
+              <span class="contentTitle"></span>
+              <div class="descriptionItem" style="color: red;"></div>
+              <span class="contentDescriptionItem"></span>
+              <div class="categoryItem" style="color: red;"></div>
+              <span class="contentCategory"></span>
+              <div class="priceItem" style="color: red;"></div>
+              <span class="contentPrice"></span>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    let firstClick = true;
+    //Chọn button trong #menu
+    let menuBtn = document.querySelector('#menu button');
+
+    //Khi click vào button sẽ gọi hàm toggleMenu
+    menuBtn.addEventListener('click', toggleMenu);
+
+    //Hàm xử lý sự kiện khi click vào button
+    function toggleMenu() {
+      //Ẩn hiện menu, thay đổi label của button
+      let menu = document.querySelector('#menu ul');
+      if (menu.className === 'show') {
+        menu.className = 'hide';
+        menuBtn.firstChild.className = 'fas fa-bars';
+      }
+      else {
+        menu.className = 'show';
+        menuBtn.firstChild.className = 'fas fa-window-close';
+      }
+    }
+    //Xử lý menu bị ẩn khi resize từ mobile -> desktop
+    window.addEventListener('resize', fixHiddenMenu);
+    function fixHiddenMenu() {
+      //console.log(window.outerWidth + ',' +window.innerWidth);
+      if (window.innerWidth >= 768) {
+        let menu = document.querySelector('#menu ul');
+        menu.classList.remove('hide');
+      }
+    }
+
+    //Show products
+    let productArr = [];
+    let url = 'https://fakestoreapi.com/products?limit=20';
+    fetch(url)
+      .then(function (response) {
+        json = response.json();
+        json.then(function (data) {
+          productArr = data;
+          initData();
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    function initData() {
+      displayProduct(productArr);
+      console.log(productArr);
+    }
+
+    // var productArr = [{
+    //     name: "iPad Pro 11 inch",
+    //     fileName: "ipad.png",
+    //     price: 12000000,
+    //     category: "Tablet",
+    //     rate: 5,
+    //     isHot: true,
+    // },
+    // {
+    //     name: "IPhone Pro 12 inch",
+    //     fileName: "ipad.png",
+    //     price: 19500000,
+    //     category: "Mobile",
+    //     rate: 5,
+    //     isHot: false,
+    // },
+    // {
+    //     name: "iPad Pro 11 inch",
+    //     fileName: "ipad.gif",
+    //     price: 29000000,
+    //     category: "Tablet",
+    //     rate: 5,
+    //     isHot: true,
+    // },
+    // {
+    //     name: "Samsung S20",
+    //     fileName: "samsung.jpg",
+    //     price: 18500000,
+    //     category: "Tablet",
+    //     rate: 5,
+    //     isHot: false,
+    // },
+    // {
+    //     name: "Dell",
+    //     fileName: "dell.jpg",
+    //     price: 17000000,
+    //     category: "Laptop",
+    //     rate: 5,
+    //     isHot: true,
+    // },
+    // {
+    //     name: "Dell XPS",
+    //     fileName: "dell.jpg",
+    //     price: 27000000,
+    //     category: "Laptop",
+    //     rate: 5,
+    //     isHot: false,
+    // }];
+
+    // let filteredProduct = productArr;
+
+    /* Functional programming
+     // let temp1 = filterProduct(productArr, filterBy);
+    // let temp2 = sortProduct(temp1, sortBy);
+    // displayProduct(temp2);
+    // displayProduct(sortProduct(filterProduct(productArr, filterBy), sortBy));
+    */
+    let temp1;
+    let temp2;
+    let card = [];
+    let categoryValue;
+    let listSearch;
+    /* Hàm hiển thị sản phẩm trong #main
+    * productArr: Mảng sản phẩm cần hiển thị
+    */
+    function displayProduct(productArr) {
+      let output = '';
+      productArr.forEach((element, index) => {
+        //Literal template
+        output += `<div class="col-s-6 col-4 col-l-3">
+                <div class="product">
+                    <h2 class="titleProduct">${element.title.toLowerCase()}</h2>
+                      <img class="imageProduct" src="${element.image}" alt="Ipad">
+                    <div class="priceProduct">${element.price.toLocaleString()} $</div>`;
+        if (element.isHot)
+          output += '<span>Hot</span>';
+        //${product.isHot?'<span>Hot</span>':''}
+        output += `<button class="AddCart btn btn-success" data-index=${index} value="${element.id}">Add to Cart</button>
+                   <button class="Detail btn btn-primary" data-index=${index} value="${element.id}" data-toggle="modal" data-target="#detail" data-backdrop="static" data-keyboard="false">Detail</button>
+                    </div>
+                </div>`;
+      });
+
+      //output to #main
+      document.querySelector('#main').innerHTML = output;
+      //event addToCart
+      $('.AddCart').click(addToCart);
+      //event viewDetail
+      $('.Detail').click(detailProduct);
+    }
+
+    //show products by default
+    displayProduct(productArr);
+
+
+
+    //Xử lý sự kiện click trên radio button sort
+    let btnRadio = document.querySelectorAll('input.sort');
+    btnRadio.forEach(function (element) {
+      element.addEventListener('click', clickRadio);
+    });
+    function clickRadio() {
+      //Sort product                
+      temp2 = sortProduct(temp1, this.value);
+      //Show product
+      displayProduct(temp2);
+      //Update comboBox sort (selected) 
+
+      // combo.selectedOptions[0].value;  (getValue)
+      // console.log(combo.options[combo.selectedIndex].text); (getText)
+      cboOptions.value = cboOptions.options[0].value;   // resetComBoBox
+    }
+
+    //Xử lý sự kiện click trên comboBox
+    var cboOptions = document.querySelector('select[name="sort"]');
+
+    cboOptions.addEventListener('change', comBoBox);
+    function comBoBox() {
+      //Sort product 
+      temp2 = sortProduct(temp1, this.value);
+      //Show product
+      displayProduct(temp2);
+      //Update radio list (checked) (resetRadio)
+      btnRadio.forEach(element => {
+        element.checked = false;
+      });
+
+    }
+    /*Hàm sắp xếp sản phẩm theo tên hoặc giá Asc/Desc
+    * sortBy: Kiểu sắp xếp 1: Giá Asc, 2: Giá Desc, 3: Name Asc, 4: Name Desc
+    */
+    function filterProduct(productFilter, filterBy) {
+      if (listSearch != null) {
+        // filteredProduct = productArr;
+        if (filterBy == 1)// Price <= 5 Mil
+        {
+          productFilter = listSearch.filter(function (product) {
+            return product.price <= 10;
+          })
+        }
+        if (filterBy == 2)//  5 Mil <= Price <= 10 Mil
+        {
+          productFilter = listSearch.filter(function (product) {
+            return (product.price >= 10 && product.price <= 20);
+          })
+        }
+        if (filterBy == 3)// 10 Mil <= Price <= 20 Mil
+        {
+          productFilter = listSearch.filter(function (product) {
+            return (product.price >= 20 && product.price <= 40);
+          })
+        }
+        if (filterBy == 4)// 20 Mil <= Price <= 40 Mil
+        {
+          productFilter = listSearch.filter(function (product) {
+            return (product.price >= 40 && product.price <= 100);
+          })
+        }
+        if (filterBy == 5)// Price >= 40 Mil
+        {
+          productFilter = listSearch.filter(function (product) {
+            return product.price >= 100;
+          })
+        }
+        return productFilter;
+      } else if (categoryValue != null) {
+        if (filterBy == 1)// Price <= 5 Mil
+        {
+          productFilter = categoryValue.filter(function (product) {
+            return product.price <= 10;
+          })
+        }
+        if (filterBy == 2)//  5 Mil <= Price <= 10 Mil
+        {
+          productFilter = categoryValue.filter(function (product) {
+            return (product.price >= 10 && product.price <= 20);
+          })
+        }
+        if (filterBy == 3)// 10 Mil <= Price <= 20 Mil
+        {
+          productFilter = categoryValue.filter(function (product) {
+            return (product.price >= 20 && product.price <= 40);
+          })
+        }
+        if (filterBy == 4)// 20 Mil <= Price <= 40 Mil
+        {
+          productFilter = categoryValue.filter(function (product) {
+            return (product.price >= 40 && product.price <= 100);
+          })
+        }
+        if (filterBy == 5)// Price >= 40 Mil
+        {
+          productFilter = categoryValue.filter(function (product) {
+            return product.price >= 100;
+          })
+        }
+
+        return productFilter;
+      } else {
+        // filteredProduct = productArr;
+        if (filterBy == 1)// Price <= 5 Mil
+        {
+          productFilter = productArr.filter(function (product) {
+            return product.price <= 10;
+          })
+        }
+        if (filterBy == 2)//  5 Mil <= Price <= 10 Mil
+        {
+          productFilter = productArr.filter(function (product) {
+            return (product.price >= 10 && product.price <= 20);
+          })
+        }
+        if (filterBy == 3)// 10 Mil <= Price <= 20 Mil
+        {
+          productFilter = productArr.filter(function (product) {
+            return (product.price >= 20 && product.price <= 40);
+          })
+        }
+        if (filterBy == 4)// 20 Mil <= Price <= 40 Mil
+        {
+          productFilter = productArr.filter(function (product) {
+            return (product.price >= 40 && product.price <= 100);
+          })
+        }
+        if (filterBy == 5)// Price >= 40 Mil
+        {
+          productFilter = productArr.filter(function (product) {
+            return product.price >= 100;
+          })
+        }
+
+        return productFilter;
+      }
+
+      //console.log(filteredProduct);
+
+    }
+
+    function sortProduct(product, sortBy) {
+      //Sắp xếp mảng productArr tăng dần theo giá sản phẩm
+      if (listSearch != null) {
+        if (sortBy == 1)
+          product = listSearch.sort(function (a, b) {
+            return a.price - b.price;
+          });
+        //Sắp xếp mảng productArr giảm dần theo giá sản phẩm
+        if (sortBy == 2)
+          product = listSearch.sort(function (a, b) {
+            return b.price - a.price;
+          });
+
+        //Your code goes here. Please!!!
+        //Sắp xếp mảng productArr tăng dần theo tên sản phẩm
+        if (sortBy == 3)
+          product = listSearch.sort(function (a, b) {
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        //Sắp xếp mảng productArr giảm dần theo tên sản phẩm
+        if (sortBy == 4)
+          product = listSearch.sort(function (a, b) {
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        return product;
+      } else if (temp1 != null) {
+        if (sortBy == 1)
+          product = temp1.sort(function (a, b) {
+            return a.price - b.price;
+          });
+        //Sắp xếp mảng productArr giảm dần theo giá sản phẩm
+        if (sortBy == 2)
+          product = temp1.sort(function (a, b) {
+            return b.price - a.price;
+          });
+
+        //Your code goes here. Please!!!
+        //Sắp xếp mảng productArr tăng dần theo tên sản phẩm
+        if (sortBy == 3)
+          product = temp1.sort(function (a, b) {
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        //Sắp xếp mảng productArr giảm dần theo tên sản phẩm
+        if (sortBy == 4)
+          product = temp1.sort(function (a, b) {
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        return product;
+      } else if (categoryValue != null) {
+        if (sortBy == 1)
+          product = categoryValue.sort(function (a, b) {
+            return a.price - b.price;
+          });
+        //Sắp xếp mảng productArr giảm dần theo giá sản phẩm
+        if (sortBy == 2)
+          product = categoryValue.sort(function (a, b) {
+            return b.price - a.price;
+          });
+
+        //Your code goes here. Please!!!
+        //Sắp xếp mảng productArr tăng dần theo tên sản phẩm
+        if (sortBy == 3)
+          product = categoryValue.sort(function (a, b) {
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        //Sắp xếp mảng productArr giảm dần theo tên sản phẩm
+        if (sortBy == 4)
+          product = categoryValue.sort(function (a, b) {
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        return product;
+      } else {
+        if (sortBy == 1)
+          product = productArr.sort(function (a, b) {
+            return a.price - b.price;
+          });
+        //Sắp xếp mảng productArr giảm dần theo giá sản phẩm
+        if (sortBy == 2)
+          product = productArr.sort(function (a, b) {
+            return b.price - a.price;
+          });
+
+        //Your code goes here. Please!!!
+        //Sắp xếp mảng productArr tăng dần theo tên sản phẩm
+        if (sortBy == 3)
+          product = productArr.sort(function (a, b) {
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        //Sắp xếp mảng productArr giảm dần theo tên sản phẩm
+        if (sortBy == 4)
+          product = productArr.sort(function (a, b) {
+            if (a.title.toLowerCase() > b.title.toLowerCase())
+              return -1;
+            if (a.title.toLowerCase() < b.title.toLowerCase())
+              return 1;
+            return 0;
+          });
+        return product;
+      }
+    }
+    //filter by price
+    let cboFilter = document.querySelector('select[name="filter"]')
+    cboFilter.addEventListener('change', filterSort);
+    function filterSort() {
+      temp1 = filterProduct(productArr, this.value);
+      cboOptions.value = cboOptions.options[0].value;
+      if (cboFilter.value == cboFilter.options[0].value) {
+        $('.searchValue').val('');
+        listSearch = null;
+        temp1 = productArr;
+      }
+      btnRadio.forEach(element => {
+        element.checked = false;
+      });
+      displayProduct(temp1);
+    }
+
+
+    //Choose a product by category
+    function findByCategory(productList, filterBy) {
+      if (listSearch != null) {
+        if (filterBy == 1) {
+          productList = listSearch.filter((product) => {
+            return product.category == "men's clothing";
+          })
+        }
+        if (filterBy == 2) {
+          productList = listSearch.filter((product) => {
+            return product.category == 'jewelery';
+          })
+        }
+        if (filterBy == 3) {
+          productList = listSearch.filter((product) => {
+            return product.category == 'electronics';
+          })
+        }
+        if (filterBy == 4) {
+          productList = listSearch.filter((product) => {
+            return product.category == "women's clothing";
+          })
+        }
+        return productList;
+      } else if (temp1 != null) {
+        if (filterBy == 1) {
+          productList = temp1.filter((product) => {
+            return product.category == "men's clothing";
+          })
+        }
+        if (filterBy == 2) {
+          productList = temp1.filter((product) => {
+            return product.category == 'jewelery';
+          })
+        }
+        if (filterBy == 3) {
+          productList = temp1.filter((product) => {
+            return product.category == 'electronics';
+          })
+        }
+        if (filterBy == 4) {
+          productList = temp1.filter((product) => {
+            return product.category == "women's clothing";
+          })
+        }
+        return productList;
+      } else {
+        if (filterBy == 1) {
+          productList = productArr.filter((product) => {
+            return product.category == "men's clothing";
+          })
+        }
+        if (filterBy == 2) {
+          productList = productArr.filter((product) => {
+            return product.category == 'jewelery';
+          })
+        }
+        if (filterBy == 3) {
+          productList = productArr.filter((product) => {
+            return product.category == 'electronics';
+          })
+        }
+        if (filterBy == 4) {
+          productList = productArr.filter((product) => {
+            return product.category == "women's clothing";
+          })
+        }
+        return productList;
+      }
+    }
+
+    document.querySelectorAll('li#clothing').forEach((element) => {
+      element.addEventListener('click', () => {
+        categoryValue = findByCategory(productArr, element.value);
+        cboOptions.value = cboOptions.options[0].value;
+        btnRadio.forEach(element => {
+          element.checked = false;
+        });
+        displayProduct(categoryValue);
+      })
+    });
+
+
+
+    //Back to HomePage
+    $('#HomePage').click(() => {
+      temp1 = null;
+      temp2 = null;
+      listSearch = null;
+      categoryValue = null;
+      cboOptions.value = cboOptions.options[0].value;
+      btnRadio.forEach(element => {
+        element.checked = false;
+      });
+      cboFilter.value = cboFilter.options[0].value;
+      $('.searchValue').val('');
+      displayProduct(productArr);
+    })
+
+    //view detail a product
+    function detailProduct() {
+      let url = 'https://fakestoreapi.com/products/' + this.value + '';
+      fetch(url)
+        .then((response) => {
+          json = response.json();
+          json.then((data) => {
+            $('.imageItem').html('<img src=' + data.image + ' style="width:200px"/>');
+            $('.contentItem').css('font-weight', 'bold');
+            $('.titleITem').html('Title: ');
+            $('.contentTitle').html(data.title);
+            $('.descriptionItem').html('Description: ');
+            $('.contentDescriptionItem').html(data.description);
+            $('.categoryItem').html('Category: ');
+            $('.contentCategory').html(data.category);
+            $('.priceItem').html('Price: ');
+            $('.contentPrice').html(data.price + '$');
+          })
+        })
+    }
+
+    //search product by title
+    $('.Search').click(function () {
+      let searchValue = $('.searchValue').val();
+      listSearch = searchByTitle(productArr, searchValue);
+      if (listSearch.length == 0) {
+        document.querySelector('#main').innerHTML = 'No records found';
+        $('#main').css('font-weight', 'bold');
+        return;
+      }
+      displayProduct(listSearch);
+    });
+    function searchByTitle(product, searchValue) {
+      if (temp1 != null) {
+        product = temp1.filter(function (product) {
+          return product.title.trim().toLowerCase().includes(searchValue.trim().toLowerCase());
+        })
+        return product;
+      } else if (categoryValue != null) {
+        product = categoryValue.filter(function (product) {
+          return product.title.trim().toLowerCase().includes(searchValue.trim().toLowerCase());
+        })
+
+        return product;
+      } else {
+        product = productArr.filter(function (product) {
+          return product.title.trim().toLowerCase().includes(searchValue.trim().toLowerCase());
+        })
+
+        return product;
+      }
+    }
+
+    //Clear Cart
+    $('#clearCart').click(() => {
+      card = [];
+      $('.show-cart').html('');
+      displayCart();
+    })
+
+    //thêm vào giỏ hàng
+    function addToCart() {
+      let url = 'https://fakestoreapi.com/products/' + this.value + '';
+      fetch(url)
+        .then((response) => {
+          json = response.json();
+          json.then((data) => {
+            //set quantity = 1
+            data.quantity = 1;
+            let x;
+            for (let index = 0; index < card.length; index++) {
+              if (card[index].id == data.id) {
+                x = card[index].quantity;
+                x++;
+                card[index].quantity = x;
+                displayCart();
+                return;
+              }
+            }
+            card.push(data);
+            displayCart();
+          })
+        });
+    }
+
+    //xem giỏ hàng
+    function displayCart() {
+      let output = "";
+      let totalQty = 0;
+      let totalCart = 0;
+      card.forEach((element, index) => {
+        output += `<tr>
+          <td><img src="${element.image}" style="width:70px"></td>
+          <td style="font-weight:bold"> ${element.title} </td>
+          <td style="color:red; font-weight:bold">${element.price}$</td>
+          <td><div class='input-group'><button class='minus-item input-group-addon btn btn-primary' data-index="${index}">-</button>
+          <input name='quantity' type='number' min='1' class='item-count form-control' data-index='${index}' value='${element.quantity}'>
+         <button class='plus-item btn btn-primary input-group-addon' data-index="${index}">+</button></div></td>
+          <td><button class='delete-item btn btn-danger' data-index="${index}">X</button></td>
+           </tr>`;
+
+        $('.show-cart').html(output);
+        totalQty += element.quantity;
+        totalCart += element.price * element.quantity;
+      })
+      $('input[name=quantity]').change(updateQty);
+      $('.total-count').html(totalQty);
+      $('.total-cart').html('Total price: ' + totalCart.toFixed(2) + '$');
+      $('.delete-item').click(removeItem);
+      $('.minus-item').click(decreaseQtyByButton);
+      $('.plus-item').click(increaseQtyByButton);
+    }
+    displayCart();
+
+    //  update quantity by button
+    function increaseQtyByButton() {
+      let index = this.dataset.index;
+      let x = card[index].quantity;
+      x++;
+      card[index].quantity = x;
+      displayCart();
+    }
+    function decreaseQtyByButton() {
+      let index = this.dataset.index;
+      let x = card[index].quantity;
+      x--;
+      if (x < 1) {
+        return;
+      }
+      card[index].quantity = x;
+      displayCart();
+    }
+    //Xử lý update số lượng SP
+    function updateQty() {
+      //Update số lượng
+      let index = this.dataset.index;
+      card[index].quantity = parseInt(this.value);
+      displayCart();
+      //Change bill
+      let sum = 0;
+      card.forEach((element) => {
+        sum += (parseFloat(element.price) * element.quantity);
+      });
+      $('.total-cart').html('Total price: ' + sum.toFixed(2) + '$');
+    };
+
+    // xóa khỏi giỏ hàng
+    function removeItem() {
+      let index = this.dataset.index;
+      card.splice(index, 1);
+      if (card.length == 0) {
+        card = [];
+        $('.show-cart').html('');
+      }
+      displayCart();
+    }
+  </script>
+</body>
+
+</html>
